@@ -28,35 +28,92 @@ function setup() {
   x_b = tox = w / 2;
   y_b = toy = h / 2;
   
-  input = createInput();
+  input = createInput().attribute('placeholder', 'color');
   input.position(15,20);
   input.size(40);
   input.style('background-color', color(220));
   
+  inputx = createInput().attribute('placeholder', 'x');
+  inputx.position(65,20);
+  inputx.size(20);
+  inputx.style('background-color', color(220));
+  
+  inputy = createInput().attribute('placeholder', 'y');
+  inputy.position(90,20);
+  inputy.size(20);
+  inputy.style('background-color', color(220));
+  
   add_button = createButton("add");
-  add_button.position(65, 20);
+  add_button.position(115, 20);
   add_button.mouseClicked(add_cone_pressed);
   add_button.style('background-color', but_col);
   
   clear_button = createButton("clear");
-  clear_button.position(115, 20);
+  clear_button.position(162, 20);
   clear_button.mouseClicked(clear_cone_pressed);
   clear_button.style('background-color', but_col);
   
   export_button = createButton("export-json");
-  export_button.position(168,20);
+  export_button.position(218,20);
   export_button.mouseClicked(export_pressed);
   export_button.style('background-color', but_col);
   
   
   export_button = createButton("import-json-file");
-  export_button.position(258,20);
+  export_button.position(308,20);
   export_button.mouseClicked(import_pressed);
   export_button.style('background-color', but_col);
   
 }
 function add_cone_pressed(){
-  add_cone(100,100);
+  var xt=inputx.value();
+  var yt=inputy.value();
+ if (xt && yt)
+  { 
+     if(xt<0 && yt<0){
+         xt=(width/2+xt*100);
+         yt=(height/2-yt*100);
+       print(xt+","+yt)
+    }
+    else if(xt==0 && yt<0){
+         xt=width/2;
+         yt=(height/2-yt*100);
+    }
+    else if(xt>0 && yt<0){
+         xt=(width/2+xt*100);
+         yt=(height/2-yt*100);
+    }
+    
+    else if(xt<0 && yt>0){
+         xt=(width/2+xt*100);
+         yt=(height/2-yt*100);
+    }
+    
+    else if(xt<0 && yt==0){
+         xt=(width/2+xt*100);
+         yt=height/2;
+    }
+    else if(xt==0 && yt==0){
+         xt=width/2;
+         yt=height/2;
+    }
+    else if(xt==0 && yt>0){
+         xt=width/2;
+         yt=(height/2-yt*100);
+    }
+    else if(xt>0&& yt==0){
+         xt=(xt*100+width/2);
+         yt=height/2;
+    }
+    else {
+       xt=(xt*100+width/2);
+       yt=(height/2-yt*100);
+    }
+    
+  add_cone(xt,yt);
+}
+  else
+    add_cone(100,100);
 }
 
 let impcone;
@@ -246,9 +303,9 @@ function keyPressed() {
 
 function mousePressed() {
   if(mouseButton === LEFT){
-    for (i = 0; i < cones.length; i++) {
-    cones[i].pressed();
-    }
+  for (i = 0; i < cones.length; i++) {
+  cones[i].pressed();
+  }
   }
 }
 

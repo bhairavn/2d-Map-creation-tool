@@ -1,15 +1,15 @@
 {
   "cone_coords":true,
-  "canvas_width":6400,
-  "canvas_height":3600,
+  "canvas_width":5000,
+  "canvas_height":3000,
   "ellipse_width":60,
   "ellipse_height":60,
   
   "background_color":230,
   "button_color":"lime",
   "text_color":"black",
-  "text_size":8,
-  "data_url":"data/data.json",
-  "import_grid_data":true,
+  "text_size":14,
+  "data_url":"data/data_1.json",
+  "import_grid_data":false,
   "save_raw_data":false
 }
