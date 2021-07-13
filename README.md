@@ -19,7 +19,7 @@ SHIFT - to stop move around with left click <br>
 (caps) B - add blue cone to mouse pointer location <br>
 (caps) Y - add yellow cone to mouse pointer location <br>
 
-enter color in top left text box and select add - adds entered color cone <br>
+enter color in top left text box, xpos, ypos and select add - adds entered color cone <br>
 
 select + press cone + DELETE button - to delete the cone <br>
  
