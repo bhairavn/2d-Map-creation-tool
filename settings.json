@@ -10,5 +10,6 @@
   "text_color":"black",
   "text_size":8,
   "data_url":"data/data.json",
-  "import_grid_data":true
+  "import_grid_data":true,
+  "save_raw_data":false
 }

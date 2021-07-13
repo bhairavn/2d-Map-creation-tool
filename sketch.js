@@ -16,7 +16,6 @@ let conf;
 
 function preload(){
 	conf = loadJSON('settings.json');	
-  
 }
 
 function setup() {
@@ -59,6 +58,7 @@ function setup() {
 function add_cone_pressed(){
   add_cone(100,100);
 }
+
 let impcone;
 function import_pressed(){
   impcone = loadJSON(str(conf.data_url), loadData);
@@ -66,21 +66,67 @@ function import_pressed(){
 function loadData(){
    temp=impcone["cones"]
   cones=[]
+
   if(conf.import_grid_data){
     for (var t=0;t<temp.length;t++)
   {
-    print(t)
-    shape = new Draggable((width/2-temp[t]["x"]*100),(height/2-temp[t]["y"]*100), conf.ellipse_width, conf.ellipse_height, temp[t]["color"]);
-    print(shape)
+    // print(t)
+    var xt =temp[t]["x"];
+    var yt = temp[t]["y"];
+    
+     if(xt<0 && yt<0){
+         xt=(width/2+xt*100);
+         yt=(height/2-yt*100);
+       print(xt+","+yt)
+    }
+    else if(xt==0 && yt<0){
+         xt=width/2;
+         yt=(height/2-yt*100);
+    }
+    else if(xt>0 && yt<0){
+         xt=(width/2+xt*100);
+         yt=(height/2-yt*100);
+    }
+    
+    else if(xt<0 && yt>0){
+         xt=(width/2+xt*100);
+         yt=(height/2-yt*100);
+    }
+    
+    else if(xt<0 && yt==0){
+         xt=(width/2+xt*100);
+         yt=height/2;
+    }
+    else if(xt==0 && yt==0){
+         xt=width/2;
+         yt=height/2;
+    }
+    else if(xt==0 && yt>0){
+         xt=width/2;
+         yt=(height/2-yt*100);
+    }
+    else if(xt>0&& yt==0){
+         xt=(xt*100+width/2);
+         yt=height/2;
+    }
+    else {
+       xt=(xt*100+width/2);
+       yt=(height/2-yt*100);
+    }
+    
+    shape = new Draggable(xt,yt, conf.ellipse_width, conf.ellipse_height, temp[t]["color"]);
+    // print(shape)
      cones.push(shape);
   }
+    
   }
-  else{
+  else
+  {
   for (var t=0;t<temp.length;t++)
   {
-    print(t)
+    // print(t)
     shape = new Draggable(temp[t]["x"],temp[t]["y"], conf.ellipse_width, conf.ellipse_height, temp[t]["color"]);
-    print(shape)
+    // print(shape)
      cones.push(shape);
   }
   }
@@ -228,20 +274,28 @@ function export_pressed(){
   var json_array_raw = [];
   var json_array_grid=[];
   
-  for (var i=0;i<cones.length;i++){
-    json_array_raw.push({x: cones[i].x, y: cones[i].y, color: cones[i].color}); 
+  if(conf.save_raw_data)
+  {
+    for (var i=0;i<cones.length;i++){
+      json_array_raw.push({x: cones[i].x,
+                           y: cones[i].y,
+                           color: cones[i].color}); 
+    }
+    var raw_json={"cones":json_array_raw} 
+    saveJSON(raw_json, 'raw_data.json', true);
   }
+  
   var x_val;
   var y_val;
   for (var i=0;i<cones.length;i++){
-    
+  
     if(cones[i].x<width/2 && cones[i].y<height/2){
          x_val=-(width/2-cones[i].x)/100;
          y_val=(height/2-cones[i].y)/100;
     }
     else if(cones[i].x==width/2 && cones[i].y<height/2){
          x_val=0;
-         y_val=(height/2-this.y)/100;
+         y_val=(height/2-cones[i].y)/100;
     }
     else if(cones[i].x>width/2 && cones[i].y<height/2){
          x_val=(cones[i].x-width/2)/100;
@@ -270,17 +324,13 @@ function export_pressed(){
     }
     else {
        x_val=(cones[i].x-width/2)/100;
-       y_val=(cones[i].y-height/2)/100;
+       y_val=-(cones[i].y-height/2)/100;
     }
     json_array_grid.push({x: x_val, y: y_val, color: cones[i].color}); 
-  }
-  var raw_json={"cones":json_array_raw}  
-  var grid_json={"cones":json_array_raw}  
-  
-  var json = JSON.stringify(cones);
-  alert(json);
-  // console.log(json); 
-  saveJSON(raw_json, 'raw_data.json', true);
+  } 
+  var grid_json={"cones":json_array_grid}  
+  // var json = JSON.stringify(cones);
+  // console.log(json);
   saveJSON(grid_json, 'gridconv_data.json', true);
 
 }
