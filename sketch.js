@@ -245,8 +245,10 @@ function keyPressed() {
 }
 
 function mousePressed() {
-  for (i = 0; i < cones.length; i++) {
-  cones[i].pressed();
+  if(mouseButton === LEFT){
+    for (i = 0; i < cones.length; i++) {
+    cones[i].pressed();
+    }
   }
 }
 
